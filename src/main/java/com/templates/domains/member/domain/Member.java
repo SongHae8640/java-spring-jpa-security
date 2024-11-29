@@ -2,9 +2,12 @@ package com.templates.domains.member.domain;
 
 import com.templates.domains.BaseTimeEntity;
 import jakarta.persistence.*;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "members")
+@NoArgsConstructor
 public class Member extends BaseTimeEntity {
 
     @Id
@@ -20,14 +23,19 @@ public class Member extends BaseTimeEntity {
     @Column(nullable = false, length = 50)
     private String name;
 
-    @Column(nullable = false, length = 100)
-    private String email;
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private MemberStatus status;
 
     public enum MemberStatus {
         ACTIVE, INACTIVE
+    }
+
+    @Builder
+    public Member(String loginId, String password, String name) {
+        this.loginId = loginId;
+        this.password = password;
+        this.name = name;
+        this.status = MemberStatus.ACTIVE;
     }
 }

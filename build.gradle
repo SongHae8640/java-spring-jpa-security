@@ -37,9 +37,6 @@ dependencies {
     // Docs
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
 
-    //jwt
-    implementation 'com.auth0:java-jwt:3.13.0'
-
     // Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
