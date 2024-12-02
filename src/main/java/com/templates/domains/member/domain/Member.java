@@ -3,11 +3,13 @@ package com.templates.domains.member.domain;
 import com.templates.domains.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "members")
 @NoArgsConstructor
+@Getter
 public class Member extends BaseTimeEntity {
 
     @Id
