@@ -1,4 +1,4 @@
-package com.templates.global.security;
+package com.templates.global.config;
 
 public class SecurityPathConstants {
     public static final String[] AUTH_PATHS = {"/api/v1/signup", "/api/v1/login", "/api/v1/logout"};

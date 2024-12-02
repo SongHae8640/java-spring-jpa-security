@@ -1,7 +1,7 @@
 package com.templates.global.config;
 
-import static com.templates.global.security.SecurityPathConstants.AUTH_PATHS;
-import static com.templates.global.security.SecurityPathConstants.SWAGGER_PATHS;
+import static com.templates.global.config.SecurityPathConstants.AUTH_PATHS;
+import static com.templates.global.config.SecurityPathConstants.SWAGGER_PATHS;
 
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
