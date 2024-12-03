@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 public class AuthController {
     private final AuthenticationManager authenticationManager;
@@ -31,5 +31,10 @@ public class AuthController {
         if (auth != null) {
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
+    }
+
+    @PostMapping("/check")
+    public boolean checkAuthentication() {
+        return SecurityContextHolder.getContext().getAuthentication().isAuthenticated();
     }
 }

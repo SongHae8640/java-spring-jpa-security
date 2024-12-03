@@ -3,6 +3,7 @@ package com.templates.global.exception;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -29,6 +30,13 @@ public class GlobalExceptionHandler {
     public ErrorResponse handleBadCredentialsException(BadCredentialsException e) {
         return ErrorResponse.of(ErrorCode.UNAUTHORIZED, e.getMessage());
     }
+
+    @ExceptionHandler(AuthenticationException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ErrorResponse handleAuthenticationException(AuthenticationException e) {
+        return ErrorResponse.of(ErrorCode.NOT_ALLOWED, e.getMessage());
+    }
+
 
     @ExceptionHandler(NoResourceFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
