@@ -1,0 +1,1 @@
+insert into tb_member (login_id, password, name, status, created_at, updated_at) values ('string', '$2a$10$YYCgKcbHhcryQI8CMYIBkeksrwI66y9Oa3KqHzzKQgMhQAG5yDSJC', '조조', 'ACTIVE', now(), now());

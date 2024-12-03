@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "members")
+@Table(name = "tb_member")
 @NoArgsConstructor
 @Getter
 public class Member extends BaseTimeEntity {
