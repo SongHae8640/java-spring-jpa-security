@@ -24,7 +24,11 @@ public class CustomUserDetailsService implements UserDetailsService {
         return new CustomUserDetails(member);
     }
 
-    record CustomUserDetails(Member member) implements UserDetails {
+    public record CustomUserDetails(Member member) implements UserDetails {
+
+        public Long getSeq() {
+            return member.getSeq();
+        }
 
         @Override
         public Collection<? extends GrantedAuthority> getAuthorities() {
