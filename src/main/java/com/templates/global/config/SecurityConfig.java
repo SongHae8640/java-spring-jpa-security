@@ -35,7 +35,7 @@ public class SecurityConfig {
                 requests.requestMatchers(HttpMethod.POST, AUTH_PATHS).permitAll()
                     .requestMatchers(SWAGGER_PATHS).permitAll()
                     .requestMatchers(PathRequest.toH2Console()).permitAll()
-                    .anyRequest().permitAll()
+                    .anyRequest().authenticated()
             )
             .formLogin(AbstractHttpConfigurer::disable)
             .logout(AbstractHttpConfigurer::disable)
