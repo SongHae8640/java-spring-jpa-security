@@ -17,24 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 public class AuthController {
-    private final AuthenticationManager authenticationManager;
-
-    @PostMapping("/login")
-    public void authenticateUser(@RequestBody LoginRequest request) {
-        Authentication authentication = authenticationManager.authenticate(request.toAuthentication());
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-    }
-
-    @PostMapping("/logout")
-    public void logoutUser(HttpServletRequest request, HttpServletResponse response) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null) {
-            new SecurityContextLogoutHandler().logout(request, response, auth);
-        }
-    }
-
     @PostMapping("/check")
-    public boolean checkAuthentication() {
-        return SecurityContextHolder.getContext().getAuthentication().isAuthenticated();
+    public Object checkAuthentication() {
+        return SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 }

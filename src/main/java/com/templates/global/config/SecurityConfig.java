@@ -25,8 +25,6 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-    private final AuthenticationEntryPoint authenticationEntryPoint;
-    private final AccessDeniedHandler accessDeniedHandler;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -35,13 +33,24 @@ public class SecurityConfig {
                 requests.requestMatchers(HttpMethod.POST, AUTH_PATHS).permitAll()
                     .requestMatchers(SWAGGER_PATHS).permitAll()
                     .requestMatchers(PathRequest.toH2Console()).permitAll()
-                    .anyRequest().authenticated()
+                    .anyRequest().permitAll()
             )
-            .formLogin(Customizer.withDefaults())
-            .logout(Customizer.withDefaults())
-            .exceptionHandling(config -> config
-                .accessDeniedHandler(accessDeniedHandler)
-                .authenticationEntryPoint(authenticationEntryPoint)
+            .formLogin(form -> form
+                .loginProcessingUrl("/api/v1/login")
+                .usernameParameter("loginId")
+                .passwordParameter("password")
+                .successHandler((request, response, authentication) -> {
+                    response.setStatus(200);
+                })
+                .failureHandler((request, response, exception) -> {
+                    response.setStatus(401);
+                })
+            )
+            .logout(logout -> logout
+                .logoutUrl("/api/v1/logout")
+                .logoutSuccessHandler((request, response, authentication) -> {
+                    response.setStatus(200);
+                })
             )
             .headers(headers -> headers.frameOptions(FrameOptionsConfig::disable));
         return http.build();
