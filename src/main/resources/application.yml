@@ -14,6 +14,12 @@ spring:
     username: sa
     password:
 
+  session:
+    timeout: 3600  # 세션 타임아웃 (초 단위)
+  security:
+    max-sessions: 1  # 동시 세션 제어
+    max-sessions-prevents-login: true  # 최대 세션 수 초과 시 로그인 방지
+
   h2:
     console:
       path: /h2-console

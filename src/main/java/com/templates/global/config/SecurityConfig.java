@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -25,6 +24,9 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
+    private final AuthenticationEntryPoint authenticationEntryPoint;
+    private final AccessDeniedHandler accessDeniedHandler;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -35,22 +37,11 @@ public class SecurityConfig {
                     .requestMatchers(PathRequest.toH2Console()).permitAll()
                     .anyRequest().permitAll()
             )
-            .formLogin(form -> form
-                .loginProcessingUrl("/api/v1/login")
-                .usernameParameter("loginId")
-                .passwordParameter("password")
-                .successHandler((request, response, authentication) -> {
-                    response.setStatus(200);
-                })
-                .failureHandler((request, response, exception) -> {
-                    response.setStatus(401);
-                })
-            )
-            .logout(logout -> logout
-                .logoutUrl("/api/v1/logout")
-                .logoutSuccessHandler((request, response, authentication) -> {
-                    response.setStatus(200);
-                })
+            .formLogin(AbstractHttpConfigurer::disable)
+            .logout(AbstractHttpConfigurer::disable)
+            .exceptionHandling(exceptionHandling -> exceptionHandling
+                .accessDeniedHandler(accessDeniedHandler)
+                .authenticationEntryPoint(authenticationEntryPoint)
             )
             .headers(headers -> headers.frameOptions(FrameOptionsConfig::disable));
         return http.build();
