@@ -11,11 +11,13 @@ import jakarta.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Table(name = "board")
 @NoArgsConstructor
 @Getter
+@ToString
 public class Board extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
