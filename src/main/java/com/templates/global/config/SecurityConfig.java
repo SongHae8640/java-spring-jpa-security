@@ -1,6 +1,7 @@
 package com.templates.global.config;
 
 import static com.templates.global.config.SecurityPathConstants.AUTH_PATHS;
+import static com.templates.global.config.SecurityPathConstants.NO_AUTH_PATHS;
 import static com.templates.global.config.SecurityPathConstants.SWAGGER_PATHS;
 
 import lombok.RequiredArgsConstructor;
@@ -24,37 +25,40 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-    private final AuthenticationEntryPoint authenticationEntryPoint;
-    private final AccessDeniedHandler accessDeniedHandler;
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-            .csrf(AbstractHttpConfigurer::disable)
-            .authorizeHttpRequests(requests ->
-                requests.requestMatchers(HttpMethod.POST, AUTH_PATHS).permitAll()
-                    .requestMatchers(SWAGGER_PATHS).permitAll()
-                    .requestMatchers(PathRequest.toH2Console()).permitAll()
-                    .anyRequest().authenticated()
-            )
-            .formLogin(AbstractHttpConfigurer::disable)
-            .logout(AbstractHttpConfigurer::disable)
-            .exceptionHandling(exceptionHandling -> exceptionHandling
-                .accessDeniedHandler(accessDeniedHandler)
-                .authenticationEntryPoint(authenticationEntryPoint)
-            )
-            .headers(headers -> headers.frameOptions(FrameOptionsConfig::disable));
-        return http.build();
-    }
+  private final AuthenticationEntryPoint authenticationEntryPoint;
+  private final AccessDeniedHandler accessDeniedHandler;
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+  @Bean
+  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    http
+        .csrf(AbstractHttpConfigurer::disable)
+        .authorizeHttpRequests(requests ->
+            requests
+                .requestMatchers(HttpMethod.POST, AUTH_PATHS).permitAll()
+                .requestMatchers(SWAGGER_PATHS).permitAll()
+                .requestMatchers(HttpMethod.GET, NO_AUTH_PATHS).permitAll()
+                .requestMatchers(PathRequest.toH2Console()).permitAll()
+                .anyRequest().authenticated()
+        )
+        .formLogin(AbstractHttpConfigurer::disable)
+        .logout(AbstractHttpConfigurer::disable)
+        .exceptionHandling(exceptionHandling -> exceptionHandling
+            .accessDeniedHandler(accessDeniedHandler)
+            .authenticationEntryPoint(authenticationEntryPoint)
+        )
+        .headers(headers -> headers.frameOptions(FrameOptionsConfig::disable));
+    return http.build();
+  }
 
-    @Bean
-    public AuthenticationManager authenticationManager(
-        AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
-    }
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
+
+  @Bean
+  public AuthenticationManager authenticationManager(
+      AuthenticationConfiguration authenticationConfiguration) throws Exception {
+    return authenticationConfiguration.getAuthenticationManager();
+  }
 }
