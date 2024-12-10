@@ -1,10 +1,11 @@
 package com.templates.domains.board.controller.dto;
 
 import com.templates.domains.board.domain.Board;
+import jakarta.validation.constraints.NotBlank;
 
 public record BoardSaveRequest(
-    String title,
-    String content
+    @NotBlank String title,
+    @NotBlank String content
 ) {
 
     public Board toEntity() {

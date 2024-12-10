@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +25,7 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
 
     @PostMapping("/login")
-    public void login(@RequestBody LoginRequest request, HttpSession session) {
+    public void login(@RequestBody @Validated LoginRequest request, HttpSession session) {
         Authentication authentication = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(request.loginId(), request.password())
         );
@@ -48,7 +49,6 @@ public class AuthController {
         if ("anonymousUser".equals(authentication.getPrincipal())) {
             throw new AuthenticationException("") {};
         }
-
         return authentication.getPrincipal();
     }
 }

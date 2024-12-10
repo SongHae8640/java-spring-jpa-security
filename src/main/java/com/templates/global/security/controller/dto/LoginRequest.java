@@ -1,10 +1,11 @@
 package com.templates.global.security.controller.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 public record LoginRequest(
-    String loginId,
-    String password
+    @NotBlank String loginId,
+    @NotBlank String password
 ) {
 
     public UsernamePasswordAuthenticationToken toAuthentication() {
