@@ -30,6 +30,10 @@ public class CustomUserDetailsService implements UserDetailsService {
             return member.getSeq();
         }
 
+        public String getName(){
+            return member.getName();
+        }
+
         @Override
         public Collection<? extends GrantedAuthority> getAuthorities() {
             return List.of(new SimpleGrantedAuthority("ROLE_USER"));

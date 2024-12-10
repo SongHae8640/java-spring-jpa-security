@@ -1,6 +1,6 @@
 package com.templates.global.security.controller.dto;
 
-import com.templates.domains.member.domain.Member;
+import com.templates.global.security.service.CustomUserDetailsService.CustomUserDetails;
 
 public record MemberInfo(
     Long seq,
@@ -8,7 +8,7 @@ public record MemberInfo(
     String name
 ) {
 
-  public static MemberInfo of(Member member) {
-    return new MemberInfo(member.getSeq(), member.getLoginId(), member.getName());
+  public static MemberInfo of(CustomUserDetails member) {
+    return new MemberInfo(member.getSeq(), member.getUsername(), member.getName());
   }
 }
