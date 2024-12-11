@@ -1,13 +1,14 @@
 package com.templates.domains.board.controller;
 
-import com.templates.domains.board.controller.dto.BoardSaveRequest;
-import com.templates.domains.board.domain.Board;
-import com.templates.domains.board.repository.BoardRepository;
-import com.templates.domains.board.service.BoardService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.validation.annotation.Validated;
+import com.templates.domains.board.controller.dto.*;
+import com.templates.domains.board.domain.*;
+import com.templates.domains.board.repository.*;
+import com.templates.domains.board.service.*;
+import com.templates.global.dto.*;
+import io.swagger.v3.oas.annotations.*;
+import lombok.*;
+import org.springframework.data.domain.*;
+import org.springframework.validation.annotation.*;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -23,7 +24,9 @@ public class BoardController {
     }
 
     @GetMapping
-    public Page<Board> findAll(Pageable pageable) {
-        return repository.findAll(pageable);
+    public Page<Board> findAll(
+        @Parameter(name = "CustomPageRequest")
+        @Validated CustomPageRequest request) {
+        return repository.findAll(request.toPageRequest());
     }
 }
