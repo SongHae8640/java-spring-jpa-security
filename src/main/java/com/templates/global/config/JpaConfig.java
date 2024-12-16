@@ -1,6 +1,8 @@
 package com.templates.global.config;
 
+import com.querydsl.jpa.impl.*;
 import com.templates.global.security.service.CustomUserDetailsService.CustomUserDetails;
+import jakarta.persistence.*;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +19,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 @RequiredArgsConstructor
 @Slf4j
 public class JpaConfig {
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    @Bean
+    public JPAQueryFactory jpaQueryFactory() {
+        return new JPAQueryFactory(entityManager);
+    }
+
     @Bean
     public AuditorAware<Long> auditorProvider() {
         return () -> Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
