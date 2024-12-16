@@ -25,8 +25,8 @@ public class BoardController {
 
     @GetMapping
     public Page<Board> findAll(
-        @Parameter(name = "CustomPageRequest")
-        @Validated CustomPageRequest request) {
-        return repository.findAll(request.toPageRequest());
+        @Parameter(name = "BoardQueryRequest") @Validated BoardQueryRequest request,
+        @Parameter(name = "CustomPageRequest") @Validated CustomPageRequest pageRequest) {
+        return repository.findByCondition(request, pageRequest.toPageRequest());
     }
 }
